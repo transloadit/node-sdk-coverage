@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for TransloaditError.ts</title>
+    <title>Code coverage report for ApiError.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> TransloaditError.ts</h1>
+        <h1><a href="index.html">All files</a> ApiError.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -98,8 +98,12 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -110,14 +114,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -129,43 +125,62 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export type TransloaditResponseBody =
-  | {
-      error?: string
-      message?: string
-      http_code?: string
-      assembly_ssl_url?: string
-      assembly_id?: string
-    }
-  | undefined
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { HTTPError } from 'got'
 &nbsp;
-export class TransloaditError extends Error {
-  override name = 'TransloaditError'
+export interface TransloaditErrorResponseBody {
+  error?: string
+  message?: string
+  assembly_ssl_url?: string
+  assembly_id?: string
+}
 &nbsp;
-  /**
-   * @deprecated use `cause` instead.
-   */
-  response: { body: TransloaditResponseBody }
+export class ApiError extends Error {
+  override name = 'ApiError'
 &nbsp;
-  /**
-   * @deprecated use `cause.assembly_id` instead.
-   */
+  // there might not be an error code (or message) if the server didn't respond with any JSON response at all
+  // e.g. if there was a 500 in the HTTP reverse proxy
+  code?: string
+  rawMessage?: string
+  assemblySslUrl?: string
   assemblyId?: string
 &nbsp;
-  /**
-   * @deprecated use `cause?.error` instead.
-   */
-  transloaditErrorCode?: string
+  override cause?: HTTPError | undefined
 &nbsp;
-  override cause?: TransloaditResponseBody
+  constructor(params: { cause?: HTTPError; body: TransloaditErrorResponseBody | undefined }) {
+    const { cause, body = {} } = params
 &nbsp;
-  constructor(message: string, body: TransloaditResponseBody) {
+    const parts = ['API error']
+    if (cause?.response.statusCode) parts.push(`(HTTP ${cause.response.statusCode})`)
+    if (body.error) parts.push(`${body.error}:`)
+    if (body.message) parts.push(body.message)
+    if (body.assembly_ssl_url) parts.push(body.assembly_ssl_url)
+&nbsp;
+    const message = parts.join(' ')
+&nbsp;
     super(message)
-    this.response = { body }
+    this.rawMessage = body.message
+    this.assemblyId = body.assembly_id
+    this.assemblySslUrl = body.assembly_ssl_url
+    this.code = body.error
+    this.cause = cause
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -175,7 +190,7 @@ export class TransloaditError extends Error {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-19T11:04:26.696Z
+                at 2024-12-19T11:07:49.586Z
             </div>
         <script src="prettify.js"></script>
         <script>
