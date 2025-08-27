@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.38% </span>
+                <span class="strong">92.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>80/83</span>
+                <span class='fraction'>84/91</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>16/18</span>
+                <span class='fraction'>16/20</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.38% </span>
+                <span class="strong">92.3% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>80/83</span>
+                <span class='fraction'>84/91</span>
             </div>
         
             
@@ -191,12 +191,20 @@
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
 <a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -236,6 +244,10 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -251,6 +263,10 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -319,14 +335,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import debug from 'debug'
-import { basename } from 'path'
-import { OnSuccessPayload, Upload, UploadOptions } from 'tus-js-client'
-import { stat } from 'fs/promises'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { stat } from 'node:fs/promises'
+import { basename } from 'node:path'
+import type { Readable } from 'node:stream'
+import debug from 'debug'
 import pMap from 'p-map'
-import type { Readable } from 'stream'
+import { type OnSuccessPayload, Upload, type UploadOptions } from 'tus-js-client'
+import type { AssemblyStatus } from './alphalib/types/assemblyStatus.js'
 import type { UploadProgress } from './Transloadit.js'
-import { AssemblyStatus } from './alphalib/types/assemblyStatus.js'
 &nbsp;
 const log = debug('transloadit')
 &nbsp;
@@ -357,13 +373,17 @@ export async function sendTusRequest({
 &nbsp;
   const sizes: Record&lt;string, number&gt; = {}
 &nbsp;
-  const haveUnknownLengthStreams = streamLabels.some((label) =&gt; !streamsMap[label]!.path)
+  const haveUnknownLengthStreams = streamLabels.some((label) =&gt; !streamsMap[label]?.path)
 &nbsp;
   // Initialize size data
   await pMap(
     streamLabels,
     async (label) =&gt; {
-      const { path } = streamsMap[label]!
+      const streamInfo = streamsMap[label]
+      if (!streamInfo) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error(`Stream info not found for label: ${label}`)</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
+      const { path } = streamInfo
 &nbsp;
       if (path) {
         const { size } = await stat(path)
@@ -371,7 +391,7 @@ export async function sendTusRequest({
         totalBytes += size
       }
     },
-    { concurrency: 5 }
+    { concurrency: 5 },
   )
 &nbsp;
   const uploadProgresses: Record&lt;string, number&gt; = {}
@@ -379,7 +399,11 @@ export async function sendTusRequest({
   async function uploadSingleStream(label: string) {
     uploadProgresses[label] = 0
 &nbsp;
-    const { stream, path } = streamsMap[label]!
+    const streamInfo = streamsMap[label]
+    if (!streamInfo) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(`Stream info not found for label: ${label}`)</span>
+<span class="cstat-no" title="statement not covered" >    }</span>
+    const { stream, path } = streamInfo
     const size = sizes[label]
 &nbsp;
     let chunkSize = requestedChunkSize
@@ -389,7 +413,7 @@ export async function sendTusRequest({
       // tus-js-client requires these options to be set for unknown size streams
       // https://github.com/tus/tus-js-client/blob/master/docs/api.md#uploadlengthdeferred
       uploadLengthDeferred = true
-      if (chunkSize === Infinity) chunkSize = 50e6
+      if (chunkSize === Number.POSITIVE_INFINITY) chunkSize = 50e6
     }
 &nbsp;
     const onTusProgress = (bytesUploaded: number): void =&gt; {
@@ -454,7 +478,7 @@ export async function sendTusRequest({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-27T08:03:11.241Z
+                at 2025-08-27T13:36:30.421Z
             </div>
         <script src="prettify.js"></script>
         <script>
