@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74% </span>
+                <span class="strong">75.31% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>111/150</span>
+                <span class='fraction'>119/158</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.42% </span>
+                <span class="strong">42.85% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/33</span>
+                <span class='fraction'>15/35</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74% </span>
+                <span class="strong">75.31% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>111/150</span>
+                <span class='fraction'>119/158</span>
             </div>
         
             
@@ -277,7 +277,16 @@
 <a name='L212'></a><a href='#L212'>212</a>
 <a name='L213'></a><a href='#L213'>213</a>
 <a name='L214'></a><a href='#L214'>214</a>
-<a name='L215'></a><a href='#L215'>215</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L215'></a><a href='#L215'>215</a>
+<a name='L216'></a><a href='#L216'>216</a>
+<a name='L217'></a><a href='#L217'>217</a>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -331,7 +340,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -365,7 +374,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -406,6 +415,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -457,10 +468,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -478,6 +485,17 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -623,7 +641,9 @@ export const prepareInputFiles = async (
   const steps = isRecord(nextParams.steps) ? { ...nextParams.steps <span class="branch-0 cbranch-no" title="branch not covered" >} : {}</span>
   const usedSteps = new Set(Object.keys(steps))
   const usedFields = new Set&lt;string&gt;()
-  const usedImportSteps = new Set&lt;string&gt;()
+  const importUrlsByStep = new Map&lt;string, string[]&gt;()
+  const importStepNames = Object.keys(steps).filter((name) =&gt; isHttpImportStep(steps[name]))
+  const sharedImportStep = importStepNames.length === <span class="branch-0 cbranch-no" title="branch not covered" >1 ? importStepNames[0] : n</span>ull
 &nbsp;
   let tempRoot: string | null = null
   const ensureTempRoot = <span class="fstat-no" title="function not covered" >async (): Promise&lt;string&gt; =&gt; {</span>
@@ -660,19 +680,15 @@ export const prepareInputFiles = async (
       }
       if (file.kind === 'url') {
         const matchedStep = findImportStepName(file.field, steps)
-        const availableStep = <span class="branch-0 cbranch-no" title="branch not covered" >matchedStep &amp;&amp; !usedImportSteps.has(matchedStep<span class="branch-0 cbranch-no" title="branch not covered" >) ? m</span>atchedStep : n</span>ull
+        const targetStep = matchedStep ?? sharedImportStep
         const shouldImport =
-          urlStrategy === <span class="branch-0 cbranch-no" title="branch not covered" >'import' || (urlStrategy === 'import-if-present' &amp;&amp; availableStep)</span>
+          urlStrategy === <span class="branch-0 cbranch-no" title="branch not covered" >'import' || (urlStrategy === 'import-if-present' &amp;&amp; targetStep)</span>
 &nbsp;
         if (shouldImport) {
-          const stepName = availableStep ?? ensureUniqueStepName(file.field, usedSteps)
-          const existing = isRecord(steps[stepName]<span class="branch-0 cbranch-no" title="branch not covered" >) ? steps[stepName] : {</span>}
-          steps[stepName] = {
-            ...existing,
-            robot: '/http/import',
-            url: file.url,
-          }
-          usedImportSteps.add(stepName)
+          const stepName = targetStep ?? ensureUniqueStepName(file.field, usedSteps)
+          const urls = importUrlsByStep.get(stepName) ?? []
+          urls.push(file.url)
+          importUrlsByStep.set(stepName, urls)
           continue
 <span class="branch-0 cbranch-no" title="branch not covered" >        }</span>
 &nbsp;
@@ -691,7 +707,18 @@ export const prepareInputFiles = async (
 <span class="cstat-no" title="statement not covered" >    throw error</span>
 <span class="cstat-no" title="statement not covered" >  }</span>
 &nbsp;
-  if (Object.keys(steps).length &gt; 0) {
+  if (Object.keys(steps).length &gt; <span class="branch-0 cbranch-no" title="branch not covered" >0 || importUrlsByStep.size &gt; 0) {</span>
+    if (importUrlsByStep.size &gt; 0) {
+      for (const [stepName, urls] of importUrlsByStep.entries()) {
+        const existing = isRecord(steps[stepName]<span class="branch-0 cbranch-no" title="branch not covered" >) ? steps[stepName] : {</span>}
+        steps[stepName] = {
+          ...existing,
+          robot: '/http/import',
+          url: urls.length === 1 ? urls[0<span class="branch-0 cbranch-no" title="branch not covered" >] : urls,</span>
+        }
+      }
+    }
+&nbsp;
     nextParams = {
       ...nextParams,
       steps,
@@ -712,7 +739,7 @@ export const prepareInputFiles = async (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-01T19:23:33.699Z
+                at 2026-02-01T19:27:45.623Z
             </div>
         <script src="prettify.js"></script>
         <script>
